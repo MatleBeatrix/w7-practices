@@ -70,8 +70,9 @@ const formElement = "<form> + inputElement{"text", "firstName"} + inputElement{"
 */
 const formElement = `
     <form id="form">
-        ${inputElement("text", "firstName", "Keresztneved")}
+        <div><h1>Űrlap</h1></div>
         ${inputElement("file", "profilPicture", "Profilképed")}
+        ${inputElement("text", "firstName", "Keresztneved")}
         ${inputElement("email", "personalEmail", "Email címed")}
         ${inputElement("checkbox", "newsLetter", "Hírlevelet szeretnél kapni")}
         ${inputElement("checkbox", "terms", "Elfogadom a felhasználási feltételeket")}

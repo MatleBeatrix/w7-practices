@@ -14,18 +14,67 @@ ol, ul, li {
   list-style:none;
   display:block;
 }
-a img {
-    border: none;
-}
-button, a {
-    cursor: pointer; color: inherit;
+
+
+body {
+    background-color:lavenderblush;
+    font-family: 'Rubik', sans-serif;
 }
 
-textarea {
-    resize: none;
+
+#form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 430px;
+    margin: auto;
+    margin-top: 10%;
+    padding: 30px;
+    padding-left: 70px;
+    border-radius: 20px;
+    
+    background-color: crimson;
+    
 }
-button, input, textarea, select {
-    appearance: none !important; 
-    -webkit-appearance: none !important;
-    border-radius: 0;
+
+h1 {
+    position: relative;
+    margin-bottom: 20px;
+
+
+    color: cornsilk;
+}
+
+input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: cornsilk;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="file"] {
+    display: block;
+} 
+
+::-webkit-file-upload-button {
+    background-color: cornsilk;
+    height: 30px;
+  }
+
+select {
+    background-color: cornsilk;
+}
+
+button {
+
+    font-size: 20px;
+    width: 50px;
+    height: 30px;
+    border-radius: 20px;
+    margin-left: 120px;
+    margin-top: 30px;
+
+    background-color: cornsilk;
 }
