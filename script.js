@@ -42,6 +42,29 @@ const inputElement = (type, name, title) => {
     `;
 }
 
+const selectElement = (type, name, title, options) => {
+    let optionsToSelect = "";
+    for (const o of options) {
+        optionsToSelect += `
+            <option>
+                ${o}
+            </option>
+        `;
+    }
+
+    //Itt: ${type} == select
+    return `
+        <div>
+            <label>${title}</label>
+            <${type} name="${name}">
+                ${optionsToSelect}
+            </${type}>
+        </div>
+    `;
+}
+
+
+
 /*
 const formElement = "<form> + inputElement{"text", "firstName"} + inputElement{"file", "profilPicture"} + inputElement{"email", "personalEmail"} + inputElement{"radio", "newsLetter"} + inputElement{"checkbox", "terms"} + "</form>"; 
 */
@@ -50,8 +73,9 @@ const formElement = `
         ${inputElement("text", "firstName", "Keresztneved")}
         ${inputElement("file", "profilPicture", "Profilképed")}
         ${inputElement("email", "personalEmail", "Email címed")}
-        ${inputElement("radio", "newsLetter", "Hírlevelet szeretnél kapni")}
+        ${inputElement("checkbox", "newsLetter", "Hírlevelet szeretnél kapni")}
         ${inputElement("checkbox", "terms", "Elfogadom a felhasználási feltételeket")}
+        ${selectElement("select", "where", "Hol hallottál rólunk?", ["interneten", "ismerőstől", "egyéb"])}
         <button>Ok</button>
     </form>
 `;
@@ -64,19 +88,22 @@ Cél: ne rakja bele az adatokat az URL-be és ne töltödjön újra az oldal
 
 const formSubmit = (event) => {
     event.preventDefault();
-    console.log(event.target);
-    event.target.classList.add('submitted');
-
+    const et = event.target;
+    console.log(et);
+    et.classList.add('submitted');
+    let selectValue = et.querySelector(`select[name="where"]`).value;   //backtick Fontos!!!
+    console.log(selectValue);
 }
 
+//const document = "hello";
 
 //Feltétel: ha aktuális input mező neve firstName akkor fusson le!
 //Segítség: gettAttribute
 const inputUpdate = (event) => {
-
     if (event.target.getAttribute("name") === "firstName"){
-        document.getElementById('inputValue').innerHTML = event.target.value;
+        document.getElementById('inputValue').innerHTML = event.target.value;   
     }
+    console.log(event.target.closest("#form"));          //parentNode nem jó! closest megy felfele
 }
 
 function loadEvent() {
@@ -86,6 +113,7 @@ function loadEvent() {
     root.insertAdjacentHTML("afterbegin", `
         <div id="inputValue"></div>
     `);
+
 
     const form = document.getElementById("form");
 
