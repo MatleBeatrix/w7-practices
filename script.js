@@ -100,10 +100,12 @@ const formSubmit = (event) => {
 //Feltétel: ha aktuális input mező neve firstName akkor fusson le!
 //Segítség: gettAttribute
 const inputUpdate = (event) => {
+    /*
     if (event.target.getAttribute("name") === "firstName"){
         document.getElementById('inputValue').innerHTML = event.target.value;   
     }
     console.log(event.target.closest("#form"));          //parentNode nem jó! closest megy felfele
+*/
 }
 
 function loadEvent() {
