@@ -33,11 +33,11 @@ const inputElement = `
     </input>
 `;
 */
-const inputElement = (type, name, title) => {
+const inputElement = (type, name, title, req = "") => {     //alapértelmezett
     return `
-        <div>
+        <div class="${type}">
             <label>${title}</label>
-            <input type="${type}" name="${name}">
+            <input type="${type}" name="${name}" ${req}>
         </div>
     `;
 }
@@ -63,22 +63,99 @@ const selectElement = (type, name, title, options) => {
     `;
 }
 
+const nameData = {
+    type: "text",
+    name: "firstName",
+    label: "Keresztneved"
+};
+
+const anotherFormFields = [
+    {
+        type: "text",
+        name: "street",
+        label: "Közterület neve"
+    },
+    {
+        type: "number",
+        name: "houseNumber",
+        label: "Házszám"
+    },
+    {
+        type: "number",
+        name: "zipCode",
+        label: "Irányítószám"
+    },
+    {
+        type: "text",
+        name: "city",
+        label: "Település neve"
+    }
+]
+
+
+
+const formFields = [
+    {
+        type: "text",
+        name: "firstName",
+        label: "Keresztneved"
+    },
+    {
+        type: "email",
+        name: "personalEmail",
+        label: "Email címed",
+        req: "required"
+    },
+    {
+        type: "file",
+        name: "profilePicture",
+        label: "Profilképed"
+    },
+    {
+        type: "checkbox",
+        name: "newsLetter",
+        label: "Hírlevelet szeretnél kapni"
+    },
+    {
+        type: "checkbox",
+        name: "terms",
+        label: "Elfogadom a felhasználási feltételeket"
+    }
+];
 
 
 /*
 const formElement = "<form> + inputElement{"text", "firstName"} + inputElement{"file", "profilPicture"} + inputElement{"email", "personalEmail"} + inputElement{"radio", "newsLetter"} + inputElement{"checkbox", "terms"} + "</form>"; 
 */
+/*
 const formElement = `
     <form id="form">
-        ${inputElement("text", "firstName", "Keresztneved")}
+        ${inputElement(nameData.type, nameData.name, nameData.label)}
+        ${inputElement("email", "personalEmail", "Email címed", "required")}
         ${inputElement("file", "profilPicture", "Profilképed")}
-        ${inputElement("email", "personalEmail", "Email címed")}
         ${inputElement("checkbox", "newsLetter", "Hírlevelet szeretnél kapni")}
         ${inputElement("checkbox", "terms", "Elfogadom a felhasználási feltételeket")}
         ${selectElement("select", "where", "Hol hallottál rólunk?", ["interneten", "ismerőstől", "egyéb"])}
         <button>Ok</button>
     </form>
 `;
+*/
+
+const formElement = (ffs, id) => {
+    let inputs = "";
+    for (const ff of ffs) {
+        inputs += inputElement(ff.type, ff.name, ff.label, ff.req);
+    };
+    
+    return `
+        <form id="${id}">
+            ${inputs}
+            ${selectElement("select", "where", "Hol hallottál rólunk?", ["interneten", "ismerőstől", "egyéb"])}
+            <button>Ok</button>
+        </form>
+    `;
+
+}
 
 
 
@@ -103,13 +180,23 @@ const inputUpdate = (event) => {
     if (event.target.getAttribute("name") === "firstName"){
         document.getElementById('inputValue').innerHTML = event.target.value;   
     }
-    console.log(event.target.closest("#form"));          //parentNode nem jó! closest megy felfele
+
+    if (event.target.getAttribute("name") === "profilePicture"){
+        console.log(event.target.files[0]);
+        const image = URL.createObjectURL(event.target.files[0]);
+        document.getElementById('inputValue').insertAdjacentHTML("beforeend", `
+            <img src="${image}">
+        `);  
+    }
+    
+    //console.log(event.target.closest("#form"));          //parentNode nem jó! closest megy felfele
 }
 
 function loadEvent() {
     console.log(`Az oldal betöltödött.`);
     const root = document.getElementById("root");
-    root.insertAdjacentHTML("afterbegin", formElement);
+    root.insertAdjacentHTML("afterbegin", formElement(formFields, "form"));
+    root.insertAdjacentHTML("afterbegin", formElement(anotherFormFields, "form2"));
     root.insertAdjacentHTML("afterbegin", `
         <div id="inputValue"></div>
     `);
