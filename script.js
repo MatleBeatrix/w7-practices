@@ -140,8 +140,41 @@ const formElement = `
     </form>
 `;
 */
+const selectFields = {
+    type: "select",
+    name: "where",
+    label:"Hol hallottál rólunk?",
+    options:[
+        "interneten",
+        "ismerőstől",
+        "egyéb"
+    ]
+}
 
-const formElement = (ffs, id) => {
+const processCountries = async () => {
+    const countryRes = await fetch("https://restcountries.com/v3.1/all");
+    const countryArr = await countryRes.json();
+    //console.log(countryArr[0].name.official);
+    let countries = [];
+    for (const c of countryArr) {
+        countries.push(c.name.official);
+    }
+    return countries;
+}
+
+console.log(processCountries());
+
+const anotherSelectFields = async () => {
+    return {
+        type: "select",
+        name: "countries",
+        label:"Ország",
+        //options:["Görögország", "Spanyolország"]
+        options: await processCountries()
+    }
+}
+
+const formElement = (ffs, id, sel) => {
     let inputs = "";
     for (const ff of ffs) {
         inputs += inputElement(ff.type, ff.name, ff.label, ff.req);
@@ -150,7 +183,7 @@ const formElement = (ffs, id) => {
     return `
         <form id="${id}">
             ${inputs}
-            ${selectElement("select", "where", "Hol hallottál rólunk?", ["interneten", "ismerőstől", "egyéb"])}
+            ${selectElement(sel.type, sel.name, sel.label, sel.options)}
             <button>Ok</button>
         </form>
     `;
@@ -192,11 +225,12 @@ const inputUpdate = (event) => {
     //console.log(event.target.closest("#form"));          //parentNode nem jó! closest megy felfele
 }
 
-function loadEvent() {
+async function loadEvent() {
     console.log(`Az oldal betöltödött.`);
     const root = document.getElementById("root");
-    root.insertAdjacentHTML("afterbegin", formElement(formFields, "form"));
-    root.insertAdjacentHTML("afterbegin", formElement(anotherFormFields, "form2"));
+    const waitForAnotherSelectField = await anotherSelectFields();
+    root.insertAdjacentHTML("afterbegin", formElement(formFields, "form", selectFields));
+    root.insertAdjacentHTML("afterbegin", formElement(anotherFormFields, "form2", waitForAnotherSelectField));
     root.insertAdjacentHTML("afterbegin", `
         <div id="inputValue"></div>
     `);
